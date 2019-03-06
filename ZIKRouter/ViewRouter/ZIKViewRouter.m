@@ -525,6 +525,7 @@ static NSMutableSet *g_finishingXXViewRouters;
         return;
     }
     
+    //FIXME: 4 - 最终执行操作的地方
     id source = configuration.source;
     ZIKViewRouteType routeType = configuration.routeType;
     switch (routeType) {
@@ -602,7 +603,9 @@ static NSMutableSet *g_finishingXXViewRouters;
                              errorDescription:@"Pushing the same view controller instance more than once is not supported. Source: (%@), destination: (%@), viewControllers in navigation stack: (%@)",source,destination,source.navigationController.viewControllers];
         return;
     }
+    //FIXME:5 - push跳转
     XXViewController *wrappedDestination = [self _wrappedDestination:destination];
+    //FIXME: 利用消息转发原理执行`router:willPerformRouteOnDestination:fromSource:`方法
     [self beginPerformRoute];
     [destination setZix_routeTypeFromRouter:@(ZIKViewRouteTypePush)];
     self.realRouteType = ZIKViewRouteRealTypePush;
@@ -1856,6 +1859,7 @@ destinationStateBeforeRoute:(ZIKPresentationState *)destinationStateBeforeRoute
     NSParameterAssert([destination conformsToProtocol:@protocol(ZIKRoutableView)]);
     [ZIKViewRouteRegistry enumerateRoutersForDestinationClass:[destination class] handler:^(ZIKRouterType * _Nonnull route) {
         ZIKViewRouterType *r = (ZIKViewRouterType *)route;
+        //FIXME: 消息转发给routerType中的类对象或者实例对象
         [r router:router willPerformRouteOnDestination:destination fromSource:source];
     }];
 }
@@ -3960,6 +3964,7 @@ static  ZIKViewRouterType *_Nullable _routerTypeToRegisteredView(Class viewClass
 + (nullable instancetype)performPath:(ZIKViewRoutePath *)path
                          configuring:(void(NS_NOESCAPE ^)(ZIKViewRouteConfiguration *config))configBuilder
                             removing:(void(NS_NOESCAPE ^ _Nullable)(ZIKViewRemoveConfiguration *config))removeConfigBuilder {
+    //FIXME: 0 - `path`中主要包含 跳转类型 和 source 信息
     return [super performWithConfiguring:^(ZIKViewRouteConfiguration * _Nonnull config) {
         if (configBuilder) {
             configBuilder(config);

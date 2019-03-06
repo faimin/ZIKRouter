@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (ZIKViewRouter<Destination, RouteConfig> *)routerFromView:(XXView *)destination source:(XXView *)source;
 - (BOOL)_validateSupportedRouteTypesForXXView;
 
+// 本身没有实现这些方法，主要目的是用来做消息转发(转发给与`ZIKRouter`中同名的类方法)
 - (void)router:(nullable ZIKViewRouter *)router willPerformRouteOnDestination:(id)destination fromSource:(nullable id)source;
 
 - (void)router:(nullable ZIKViewRouter *)router didPerformRouteOnDestination:(id)destination fromSource:(nullable id)source;

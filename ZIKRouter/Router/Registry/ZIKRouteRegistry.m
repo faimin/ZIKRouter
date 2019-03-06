@@ -345,6 +345,7 @@ static CFMutableSetRef _factoryBlocks;
         NSMutableArray<Protocol *> *traversedProtocols = [NSMutableArray array];
 #endif
         do {
+            // 从适配器字典中通过key=destinationProtocol去取另一个适配器protocol,再以这个适配器protocol到destinationProtocolToRouterMap字典中去取router
             adaptee = CFDictionaryGetValue(self.adapterToAdapteeMap, (__bridge const void *)(adapter));
             if (adaptee == nil) {
                 break;

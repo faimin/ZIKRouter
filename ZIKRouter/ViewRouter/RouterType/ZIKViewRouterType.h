@@ -15,6 +15,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//说明：这个类仅仅只是一个代理类，它的作用其实是把事件转发给`router`,比如执行`ZIKViewRouterType(Proxy)`中的方法时，其实它本身根本就没有实现，最后都会转发给`router - (ZIKViewRouter(Perform))`;
+
 /// Proxy to use ZIKViewRouter class type or ZIKViewRoute with compile time checking. These instance methods are actually class methods in ZIKViewRouter class.
 @interface ZIKViewRouterType<__covariant Destination, __covariant RouteConfig: ZIKViewRouteConfiguration *> : ZIKRouterType<Destination, RouteConfig, ZIKViewRemoveConfiguration *>
 @end

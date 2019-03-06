@@ -74,6 +74,9 @@ ZIKAnyViewRouterType *_Nullable _ZIKViewRouterToIdentifier(NSString *identifier)
 
 + (ZIKViewRouterType<id, ZIKViewRouteConfiguration *> *(^)(Protocol<ZIKViewRoutable> *))toView {
     return ^(Protocol *viewProtocol) {
+        // 从静态全局的`CFDictionary`中通过`protocol`取出最开始注册的`ZIKRouter子类Class`(或实例对象),
+        // 不管是`Class`还是`实例对象`都会被包装成`ZIKViewRouterType实例对象`,然后通过`ZIKViewRouterType实例对象`执行` performPath:configuring:`方法来生成`ZIKRouter`对象
+        // 当要跳转时，执行`router`的`performRouteWithSuccessHandler:`方法即可；
         return _ZIKViewRouterToView(viewProtocol);
     };
 }

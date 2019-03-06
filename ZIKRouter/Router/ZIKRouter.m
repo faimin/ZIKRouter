@@ -153,9 +153,12 @@ NSErrorDomain const ZIKRouteErrorDomain = @"ZIKRouteErrorDomain";
             destination = makedDestination;
         }
     }
+    //FIXME: 3
+    // 获取要跳转到的 targetView or targetVC
     if (destination == nil) {
         destination = [self destinationWithConfiguration:configuration];
     }
+    // 弱引用 targetView || targetVC
     [self attachDestination:destination];
     if (destination == nil) {
         [self endPerformRouteWithError:[ZIKRouter errorWithCode:ZIKRouteErrorDestinationUnavailable localizedDescriptionFormat:@"Destination from router is nil. Maybe your configuration is invalid (%@), or there is a bug in the router.", configuration]];
@@ -209,16 +212,21 @@ NSErrorDomain const ZIKRouteErrorDomain = @"ZIKRouteErrorDomain";
         }
         return;
     }
+    //FIXME: 2
     [self notifyRouteState:ZIKRouterStateRouting];
     ZIKPerformRouteConfiguration *configuration = self.original_configuration;
+    // 假如成功回调不等于nil
     if (performerSuccessHandler) {
+        // 获取原始的成功回调
         void(^ori_performerSuccessHandler)(id) = configuration.performerSuccessHandler;
+        // 假如原始的成功回调不为nil，则重新组装成功回调的block
         if (ori_performerSuccessHandler) {
             performerSuccessHandler = ^(id destination) {
                 ori_performerSuccessHandler(destination);
                 performerSuccessHandler(destination);
             };
         }
+        // 把成功回调重新赋值给configuration
         configuration.performerSuccessHandler = performerSuccessHandler;
     }
     if (performerErrorHandler) {
@@ -536,6 +544,7 @@ NSErrorDomain const ZIKRouteErrorDomain = @"ZIKRouteErrorDomain";
             config = config.injected;
         }
         void(^successHandler)(id destination) = config.performerSuccessHandler;
+        // inject操作
         config.performerSuccessHandler = ^(id  _Nonnull destination) {
             if (successHandler) {
                 successHandler(destination);

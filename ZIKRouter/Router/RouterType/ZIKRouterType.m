@@ -78,6 +78,8 @@
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
+    // 转发给routeObject中同名的类方法或者实例方法;
+    // runtime不区分aSelector到底是实例方法还是类方法,在runtime眼里aSelector只是一个字符串,触发消息转发的时候会执行到这里把方法转发给routeObject处理,如果routeObject是实例就调用与aSelector同名的实例方法,是Class就调用与aSelector同名的类方法;
     return self.routeObject;
 }
 
